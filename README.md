@@ -24,7 +24,9 @@
   pipeline called QA pipeline (TBD) wich computes the summary information and QA metrics 
   - TDB: Ingestion Task configuration is responsible for the mapping of camera specific  
     header key values to (table, property) in the schema
-  
+
+https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
+
 ## References
   - LSE-63 Data Quality Assurrance Plan
   - LSST Database Schema, baseline version (https://lsst-web.ncsa.illinois.edu/schema/index.php?sVer=baseline)
