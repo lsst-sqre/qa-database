@@ -3,7 +3,7 @@
 ## Introduction
   
   SQuaRE is designing a QA database to store summary information 
-  and QA metrics fro to be used in the context of the verification datasets. The current schema supports single visit processing and eventually the schema  will be extended to co-add processing.
+  and QA metrics,  to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
   Changes can be done in MySQLWorkbench (http://dev.mysql.com/downloads/workbench/), which installs easily in several platforms. Clone this repo, open the sqa.mwb file, make your changes and export to SQL. 
   Do not change the SQL directly.
