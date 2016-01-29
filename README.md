@@ -3,7 +3,7 @@
 ## Introduction
   
   SQuaRE is designing a QA database to store summary information 
-  and QA metrics,  to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
+  and QA metrics to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
   There are three sets of tables, for QA summary information, metrics and for process execution.
   
