@@ -25,6 +25,8 @@
   - TDB: Ingestion Task configuration is responsible for the mapping of camera specific  
     header key values to (table, property) in the schema
 
+## Database Model
+
 https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
 
 ## References
