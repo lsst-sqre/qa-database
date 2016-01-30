@@ -33,6 +33,11 @@ For run=xxxx, give me the list of visits with failures
 Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds
 
 Give me all the process ccd logs of failed ccds in visit=yyyy
+
+Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
+
+Give me distributions of the mean astrometric scatter of all runs that processed dataset=zzz, the version of the stack, the configuration file used fromdate=mm-dd-yy  and with at least 1000 ccds processed
+
  
 
 ## References
