@@ -22,8 +22,22 @@
 
 https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
 
+## Sample queries
+
+Give me all datasets processed, run numbers, process date, status and who processed
+
+For run=xxxx, give me the fraction of processed ccd failures
+
+For run=xxxx, give me the list of visits with failures
+
+Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed visits
+
+Give me all the process ccd logs of failed ccds in visit=yyyy
+ 
+
 ## References
   - LSE-63 Data Quality Assurrance Plan
   - LSST Database Schema, baseline version (https://lsst-web.ncsa.illinois.edu/schema/index.php?sVer=baseline)
+  - pipeQA
   - HSC Database schema v1.0 
   - DES Quick Reduce and DES operations database
