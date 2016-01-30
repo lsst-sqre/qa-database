@@ -30,7 +30,7 @@ For run=xxxx, give me the fraction of processed ccd failures
 
 For run=xxxx, give me the list of visits with failures
 
-Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed visits
+Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds
 
 Give me all the process ccd logs of failed ccds in visit=yyyy
  
