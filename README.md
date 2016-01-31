@@ -3,30 +3,50 @@
 ## Introduction
   
   SQuaRE is designing a QA database to store summary information 
-  and QA metrics from a sample of highly S/N sources. 
+  and QA metrics to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  The current model considers only single visit processing and will eventually be  
-  extended to co-add processing.
+  There are three sets of tables, for QA summary information, metrics, and for process execution.
   
-  Changes in the schema can be done in MySQLWorkbench (http://dev.mysql.com/downloads/workbench/) 
-  which installs easily in several platforms. 
-  
-  Clone this repo, open the sqa.mwo file, make your changes and export to SQL. 
-  Do not change the SQL directly.
+  Changes can be made in MySQLWorkbench (http://dev.mysql.com/downloads/workbench/) - it installs easily in several platforms. Clone this repo, open the sqa.mwb file, make your changes and export to SQL. Do not change the SQL directly.
 
 ## General guidelines
   
-  - It has to be camera agnostic to be used in the context of the verification datasets
   - Store summary information and QA metrics
-  - Optimized for fast and interactive QA visualization
-  - Metrics must be easily extended
-  - Support  SDSS, CFHT and DECam images processed by the LSST stack, eventually a simplified
-  pipeline called QA pipeline (TBD) wich computes the summary information and QA metrics 
-  - TDB: Ingestion Task configuration is responsible for the mapping of camera specific  
+  - QA metrics must easily extended 
+  - Must be optimized for fast and interactive QA visualization
+  - It has to be camera agnostic, should support at least SDSS, CFHT and DECam images processed by the LSST stack and QA tasks that will compute the summary information and QA metrics 
+  - TDB: data insgestion configuration should be responsible for the mapping of camera specific  
     header key values to (table, property) in the schema
-  
+
+## Database Model
+
+https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
+
+## Sample queries
+
+Give me all processed datasets, run numbers, process date, status and who processed
+
+For run=xxxx, give me the fraction of processed ccd failures
+
+For run=xxxx, give me the footprint (i.e. corners in sky coordinates of all processed ccds) 
+
+For run=xxxx, give me the list of visits with failures
+
+Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds (TODO: include astrometric scatter in the ccd table)
+ 
+Give me all the process ccd logs of failed ccds in visit=yyyy
+
+Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
+(cannot be done in sql, but we can return the output_dir and then use the butler to get files giving the ccd and visit) 
+
+Give me distributions of the mean astrometric scatter of all runs that processed dataset=zzz, the version of the stack, the configuration file used, from date=yyyy-mm-dd and with at least 1000 ccds processed
+
+Recover DECam image quality history from date=yyyy-mm-dd and date=yyyy-mm-dd looking at the most recent runs (TODO: include camera in the datasets table)
+ 
+
 ## References
   - LSE-63 Data Quality Assurrance Plan
   - LSST Database Schema, baseline version (https://lsst-web.ncsa.illinois.edu/schema/index.php?sVer=baseline)
+  - pipeQA
   - HSC Database schema v1.0 
   - DES Quick Reduce and DES operations database
