@@ -11,12 +11,11 @@
 
 ## General guidelines
   
-  - Store summary information and QA metrics
-  - QA metrics must easily extended 
-  - Must be optimized for fast and interactive QA visualization
-  - It has to be camera agnostic, should support at least SDSS, CFHT and DECam images processed by the LSST stack and QA tasks that will compute the summary information and QA metrics 
-  - TDB: data insgestion configuration should be responsible for the mapping of camera specific  
-    header key values to (table, property) in the schema
+- Store summary information and QA metrics
+- QA metrics must easily extended 
+- Must be optimized for fast and interactive QA visualization
+- It has to be camera agnostic, should support at least SDSS, CFHT and DECam images processed by the LSST stack and QA tasks that will compute the summary information and QA metrics 
+- TDB: data insgestion configuration should be responsible for the mapping of camera specific header key values to (table, property) in the schema
 
 ## Database Model
 
@@ -24,24 +23,24 @@ https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
 
 ## Sample queries
 
-Give me all processed datasets, run numbers, process date, status and who processed
+- Give me all processed datasets, run numbers, process date, status and who processed
 
-For run=xxxx, give me the fraction of processed ccd failures
+- For run=xxxx, give me the fraction of processed ccd failures
 
-For run=xxxx, give me the footprint (i.e. corners in sky coordinates of all processed ccds) 
+- For run=xxxx, give me the footprint (i.e. corners in sky coordinates of all processed ccds) 
 
-For run=xxxx, give me the list of visits with failures
+- For run=xxxx, give me the list of visits with failures
 
-Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds (TODO: include astrometric scatter in the ccd table)
+- Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds 
  
-Give me all the process ccd logs of failed ccds in visit=yyyy
+- Give me all the process ccd logs of failed ccds in visit=yyyy
 
-Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
+- Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
 (cannot be done in sql, but we can return the output_dir and then use the butler to get files giving the ccd and visit) 
 
-Give me distributions of the mean astrometric scatter of all runs that processed dataset=zzz, the version of the stack, the configuration file used, from date=yyyy-mm-dd and with at least 1000 ccds processed
+- Give me distributions of the median scatter in ra and dec of all runs that processed dataset=zzz, the version of the stack, the configuration file used, from date=yyyy-mm-dd, and with at least 1000 ccds processed
 
-Recover DECam image quality history from date=yyyy-mm-dd and date=yyyy-mm-dd looking at the most recent runs (TODO: include camera in the datasets table)
+- Recover DECam image quality history from date=yyyy-mm-dd and date=yyyy-mm-dd looking at the most recent runs 
  
 
 ## References
