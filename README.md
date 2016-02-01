@@ -23,8 +23,19 @@ https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
 
 ## Sample queries
 
-- Give me all processed datasets, run numbers, process date, status and who processed
+- Give me all processed datasets, run numbers, date, duration, status and who processed
 
+```sql 
+SELECT d.name, 
+       r.run_id, 
+       r.start, 
+       r.end - r.start as duration, 
+       r.status, 
+       u.username
+FROM run r 
+INNER JOIN dataset d ON r.dataset_id=d.dataset_id
+INNER JOIN user u ON r.user_id=u.user_id;
+```
 - For run=xxxx, give me the fraction of processed ccd failures
 
 - For run=xxxx, give me the footprint (i.e. corners in sky coordinates of all processed ccds) 
