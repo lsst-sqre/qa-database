@@ -24,7 +24,6 @@ https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
 ## Sample queries
 
 - Give me all processed datasets, run numbers, date, duration, status and who processed
-
 ```sql 
 SELECT d.name, 
        r.run_id, 
@@ -36,15 +35,63 @@ FROM run r
 INNER JOIN dataset d ON r.dataset_id=d.dataset_id
 INNER JOIN user u ON r.user_id=u.user_id;
 ```
-- For run=xxxx, give me the fraction of processed ccd failures
-
-- For run=xxxx, give me the footprint (i.e. corners in sky coordinates of all processed ccds) 
-
+- For run=xxxx, give me the fraction of ccd failures
+```sql
+SELECT rv.n_failed/rv.n_processed as failure_fraction 
+FROM run_visit rv
+INNER JOIN run r ON rv.run_id=r.run_id  
+WHERE run_id = 'xxxx';
+```
 - For run=xxxx, give me the list of visits with failures
+```sql
+SELECT visit 
+FROM visit v 
+INNER JOIN run_visit rv ON v.visit_id=rv.visit_id
+INNER JOIN run r ON rv.run_id=r.run_id
+WHERE r.run_id='xxxx';
+```
 
-- Give me filter, exptime, zd, airmass, ha, median of fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds 
- 
-- Give me all the process ccd logs of failed ccds in visit=yyyy
+- Give me the footprint or run xxxx (i.e. corners in sky coordinates of all processed ccds) 
+```sql
+SELECT c.llra, 
+       c.lldec, 
+       c.urra, 
+       c.urdec 
+FROM ccd c 
+INNER JOIN visit v ON c.visit_id=v.visit_id
+INNER JOIN run_visit rv ON v.visit_id =rv.visit_id
+INNER JOIN run r ON rv.run_id = r.run_id where run_id = 'xxxx';
+```
+
+- Give me filter, exptime, zd, airmass, ha, and the median fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds in visit yyyy  
+
+```sql
+SELECT v.filter, 
+       v.exptime, 
+       v.zd, 
+       v.airmass, 
+       v.ha, 
+       c.median_fwhm, 
+       1.0-c.median_minor_axis/c.median_major_axis as median_ellipticity,
+       c.median_sky_bkg,
+       c.ra_scatter,
+       c.dec_scatter
+FROM visit v, 
+     ccd c
+WHERE v.visit_id = c.visit_id 
+AND v.visit = 'yyyy';
+```
+
+TODO: summarize these values per visit (make use of scisql_median() function to compute median in the database, avg() could be used as an alternative)
+
+- Give me the process ccd logs of failed ccds in visit yyyy
+```sql
+SELECT log
+FROM visit v, 
+     ccd c
+WHERE v.visit_id = c.visit_id 
+AND v.visit = 'yyyy';
+```
 
 - Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
 (cannot be done in sql, but we can return the output_dir and then use the butler to get files giving the ccd and visit) 
