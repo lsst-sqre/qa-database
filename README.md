@@ -2,10 +2,10 @@
 
 ## Introduction
   
-  SQuaRE is designing a QA database to store summary information 
-  and QA metrics to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
+  SQuaRE is designing a QA database to store metrics and summary information 
+to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  There are three sets of tables, for QA metrics, summary information, and for process execution. The motivation for that is the characterization of each single visit at diferent levels of information. The QA metrics are computed by the "QA pipeline" and only the results are stored. For metrics that failed one can look at aggregated information at the cdd or visit level stored in the database - this is being designed to enable fast and interactive visualization. If the full image and source catalog are needed for futher inspection they still can be retieved from the process output_dir using the butler (or later throught the webserv API). 
+  There are three sets of tables for QA metrics, summary information, and for process execution. The motivation for that is the characterization of each single visit at diferent levels of information. The QA metrics are computed by the "QA pipeline" and only the results are stored. For metrics that failed one can look at aggregated information at the cdd or visit levels stored in the database. The ccd summary information is computed from the qa_source table, which store properties of high S/N point sources (not decided yet if we want to keep this table in the database, it depends on  its size). If the full image and source catalog are required for futher inspection they  can be retieved from the process output_dir using the butler (or throught the webserv API). 
   
   This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results among datasets still at the database level (i.e using SQL). The mechisms for translating camera-specific metadata is being discussed.
   
