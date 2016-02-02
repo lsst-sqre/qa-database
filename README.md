@@ -5,7 +5,9 @@
   SQuaRE is designing a QA database to store summary information 
   and QA metrics to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  There are three sets of tables, for QA summary information, metrics, and for process execution.
+  There are three sets of tables, for QA metrics, summary information, and for process execution. The motivation for that is the characterization of each single visit at diferent levels of information. The QA metrics are computed by the "QA pipeline" and only the results are stored. For metrics that failed one can look at aggregated information at the cdd or visit level stored in the database - this is being designed to enable fast and interactive visualization. If the full image and source catalog are needed for futher inspection they still can be retieved from the process output_dir using the butler (or later throught the webserv API). 
+  
+  This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results among datasets still at the database level (i.e using SQL). The mechisms for translating camera-specific metadata is being discussed.
   
   Changes can be made in MySQLWorkbench (http://dev.mysql.com/downloads/workbench/) - it installs easily in several platforms. Clone this repo, open the sqa.mwb file, make your changes and export to SQL. Do not change the SQL directly.
 
@@ -82,7 +84,7 @@ WHERE v.visit_id = c.visit_id
 AND v.visit = 'yyyy';
 ```
 
-TODO: summarize these values per visit (make use of scisql_median() function to compute median in the database, avg() could be used as an alternative)
+TODO: aggregate these values per visit (make use of scisql_median() function to compute median in the database, avg() could be used as an alternative)
 
 - Give me the process ccd logs of failed ccds in visit yyyy
 ```sql
