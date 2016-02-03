@@ -5,7 +5,7 @@
   SQuaRE is designing a QA database to store metrics and summary information 
 to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  There are three sets of tables for QA metrics, summary information, and for process execution. The motivation for that is the characterization of each single visit at diferent levels of information. The QA metrics are computed by the "QA pipeline" and only the results are stored. For metrics that failed one can look at aggregated information at the cdd or visit levels stored in the database. The ccd summary information is computed from the qa_source table, which store properties of high S/N point sources (not decided yet if we want to keep this table in the database, it depends on  its size). If the full image and source catalog are required for futher inspection they  can be retieved from the process output_dir using the butler (or throught the webserv API). 
+  There are three sets of tables for QA metrics, summary information, and for process execution. The motivation for that is the characterization of each single visit at diferent levels of information. The QA metrics are computed by the QA Tasks and only the results are stored. For metrics that failed one can look at aggregated information at the cdd or visit levels stored in the database. The ccd summary information is computed from the qa_source table, which store properties of high S/N point sources. If the full image and source catalog are required for futher inspection they  can be retieved from the process output_dir using the butler (or throught the webserv API). 
   
   This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results among datasets still at the database level (i.e using SQL). The mechisms for translating camera-specific metadata is being discussed.
   
@@ -66,7 +66,6 @@ INNER JOIN run r ON rv.run_id = r.run_id where run_id = 'xxxx';
 ```
 
 - Give me filter, exptime, zd, airmass, ha, and the median fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds in visit yyyy  
-
 ```sql
 SELECT v.filter, 
        v.exptime, 
@@ -84,8 +83,31 @@ WHERE v.visit_id = c.visit_id
 AND v.visit = 'yyyy';
 ```
 
-TODO: aggregate these values per visit (make use of scisql_median() function to compute median in the database, avg() could be used as an alternative)
-
+- Give me summary information for all visits processed by run xxxx (use scisql_median() function to aggregate values per visit)
+```sql
+SELECT v.visit,
+       v.filter, 
+       v.exptime, 
+       v.zd, 
+       v.airmass, 
+       v.ha, 
+       scisql_median(c.median_fwhm) as fwhm, 
+       scisql_median(1.0-c.median_minor_axis/c.median_major_axis) as ellipticity,
+       scisql_median(c.median_sky_bkg) as sky_bkg,
+       scisql_median(c.ra_scatter) as ra_scatter,
+       scisql_median(c.dec_scatter) as dec_scatter
+FROM ccd c 
+INNER JOIN visit ON c.visit_id = v.visit_id
+INNER JOIN run_visit rv ON v.visit_id =rv.visit_id
+INNER JOIN run r ON rv.run_id = r.run_id where run_id = 'xxxx'
+GROUP BY v.visit,
+         v.filter,
+         v.exptime,
+         v.zd,
+         v.airmass,
+         v.ha
+ORDER BY v.visit;
+```
 - Give me the process ccd logs of failed ccds in visit yyyy
 ```sql
 SELECT log
@@ -96,12 +118,42 @@ AND v.visit = 'yyyy';
 ```
 
 - Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
-(cannot be done in sql, but we can return the output_dir and then use the butler to get files giving the ccd and visit) 
+(cannot be done in sql, but if we return the output_dir then one can user the butler to get files giving the ccd and visit) 
 
-- Give me distributions of the median scatter in ra and dec of all runs that processed dataset=zzz, the version of the stack, the configuration file used, from date=yyyy-mm-dd, and with at least 1000 ccds processed
+- Give me median scatter in ra and dec for all visits in all runs that processed dataset=zzz, the version of the stack, the configuration file used, from date=yyyy-mm-dd with at least 1000 ccds processed in each visit
+```sql
+SELECT r.run_id as run,
+       d.name as dataset,
+       v.visit,
+       scisql_median(c.ra_scatter) as ra_scatter,
+       scisql_median(c.dec_scatter) as dec_scatter
+FROM ccd c 
+INNER JOIN visit ON c.visit_id = v.visit_id
+INNER JOIN run_visit rv ON v.visit_id =rv.visit_id
+INNER JOIN run r ON rv.run_id = r.run_id 
+INNER JOIN dataset d ON r.dataset_id=d.dataset_id
+WHERE d.name='zzzz'
+GROUP BY v.visit
+ORDER BY r.run_id;
+```
 
-- Recover DECam image quality history from date=yyyy-mm-dd and date=yyyy-mm-dd looking at the most recent runs 
- 
+- Recover DECam image quality history (e.g. fwhm and its scatter) from date=yyyy-mm-dd and date=yyyy-mm-dd looking at all runs that processed decam data 
+```sql
+SELECT r.run_id as run,
+       d.name as dataset,
+       v.visit,
+       scisql_median(c.median_fwhm) as fwhm,
+       scisql_median(c.mad_fwhm) as scatter
+FROM ccd c 
+INNER JOIN visit ON c.visit_id = v.visit_id
+INNER JOIN run_visit rv ON v.visit_id =rv.visit_id
+INNER JOIN run r ON rv.run_id = r.run_id 
+INNER JOIN dataset d ON r.dataset_id=d.dataset_id
+WHERE d.camera= 'decam'
+GROUP BY v.visit
+ORDER BY r.run_id;
+```
+
 
 ## References
   - LSE-63 Data Quality Assurrance Plan
