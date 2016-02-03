@@ -5,9 +5,7 @@
   SQuaRE is designing a QA database to store metrics and summary information 
 to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  There are three sets of tables to gather information at different levels:
-  
-  1) QA metrics are computed by the QA Tasks and only the results are stored. For metrics that failed one can look at summary information for cdds or visits. 
+  There are three sets of tables to gather information at different levels:  1) QA metrics are computed by the QA Tasks and only the results are stored. For metrics that failed one can look at summary information for cdds or visits. 
   2) The ccd or visit summary information is computed from the qa_source table which contains a subset of high S/N point sources.
   3) If the full image and source catalog are required for futher inspection they can be retieved from the process output_dir using the butler. Configuration, code version and logs are also stored. 
   
