@@ -44,7 +44,7 @@ FROM run_visit rv
 INNER JOIN run r ON rv.run_id=r.run_id  
 WHERE run_id = 'xxxx';
 ```
-- For run=xxxx, give me the list of visits with failures
+- For run=xxxx, give me a list of visits with failures
 ```sql
 SELECT visit 
 FROM visit v 
@@ -65,7 +65,7 @@ INNER JOIN run_visit rv ON v.visit_id =rv.visit_id
 INNER JOIN run r ON rv.run_id = r.run_id where run_id = 'xxxx';
 ```
 
-- Give me filter, exptime, zd, airmass, ha, and the median fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all failed ccds in visit yyyy  
+- Give me filter, exptime, zd, airmass, ha, and the median fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all ccds in visit yyyy  
 ```sql
 SELECT v.filter, 
        v.exptime, 
@@ -109,12 +109,15 @@ GROUP BY v.visit,
 ORDER BY v.visit;
 ```
 - Give me the process ccd logs of failed ccds in visit yyyy
+TODO: we need an status in ccd table
+
 ```sql
 SELECT log
 FROM visit v, 
      ccd c
 WHERE v.visit_id = c.visit_id 
-AND v.visit = 'yyyy';
+AND v.visit = 'yyyy'
+AND c.status = 1;
 ```
 
 - Give me src catalog and image files for ccd=1, visit=yyyy procesed by run=xxxx 
