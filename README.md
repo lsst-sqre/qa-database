@@ -5,7 +5,11 @@
   SQuaRE is designing a QA database to store metrics and summary information 
 to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  There are three sets of tables for QA metrics, summary information, and for process execution. The motivation for that is the characterization of each single visit at diferent levels of information. The QA metrics are computed by the QA Tasks and only the results are stored. For metrics that failed one can look at aggregated information at the cdd or visit levels stored in the database. The ccd summary information is computed from the qa_source table, which store properties of high S/N point sources. If the full image and source catalog are required for futher inspection they  can be retieved from the process output_dir using the butler (or throught the webserv API). 
+  There are three sets of tables to gather information at different levels:
+  
+  1) QA metrics are computed by the QA Tasks and only the results are stored. For metrics that failed one can look at summary information for cdds or visits. 
+  2) The ccd or visit summary information is computed from the qa_source table which contains a subset of high S/N point sources.
+  3) If the full image and source catalog are required for futher inspection they can be retieved from the process output_dir using the butler. Configuration, code version and logs are also stored. 
   
   This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results among datasets  using SQL. The mechanism for translating camera-specific metadata to the common model is being discussed.
   
