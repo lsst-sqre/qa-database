@@ -57,7 +57,7 @@ SELECT visit
 FROM visit v 
 INNER JOIN run_visit rv ON v.visit_id=rv.visit_id
 INNER JOIN run r ON rv.run_id=r.run_id
-WHERE r.run_id='xxxx';
+WHERE rv.n_failed > 0 AND r.run_id='xxxx';
 ```
 
 - Give me the footprint or run xxxx (i.e. corners in sky coordinates of all processed ccds) 
