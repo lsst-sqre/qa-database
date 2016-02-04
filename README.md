@@ -32,6 +32,8 @@ https://github.com/lsst-sqre/qa-database/blob/master/sqa.pdf
 
 ## Sample queries
 
+### Process information
+
 - Give me all processed datasets, run numbers, date, duration, status and who processed
 ```sql 
 SELECT d.name, 
@@ -71,6 +73,8 @@ INNER JOIN visit v ON c.visit_id=v.visit_id
 INNER JOIN run_visit rv ON v.visit_id =rv.visit_id
 INNER JOIN run r ON rv.run_id = r.run_id where run_id = 'xxxx';
 ```
+
+### Summary Information
 
 - Give me filter, exptime, zd, airmass, ha, and the median fwhm, ellipticity, sky_bkg, ra_scatter, dec_scatter of all ccds in visit yyyy  
 ```sql
@@ -163,6 +167,14 @@ WHERE d.camera= 'decam'
 GROUP BY v.visit
 ORDER BY r.run_id;
 ```
+
+## QA Metrics
+
+- Give me all metrics, conditions, thresholds and descriptions available
+- Give me all metrics that failed in run xxx
+- Give me the fraction of visits in run xxxx that passed metric mmmm
+- Give me the value and sigma of the metric mmmm for all ccds in visit yyyy
+
 
 
 ## References
