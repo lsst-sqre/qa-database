@@ -1,25 +1,30 @@
 # SQuaRE QA database
 
+## Changelog
+
+v0.1 - Initial proposal
+v0.2 - Using LSST database naming convention (in preparation)
+
 ## Introduction
   
   SQuaRE is designing a QA database to store metrics and summary information 
 to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
   
-  There are three sets of tables to gather information at different levels:  1) QA metrics are computed by the QA Tasks and only the results are stored. For metrics that failed one can look at summary information for cdds or visits. 
-  2) The ccd or visit summary information is computed from the qa_source table which contains a subset of high S/N point sources.
-  3) If the full image and source catalog are required for futher inspection they can be retieved from the process output_dir using the butler. Configuration, code version and logs are also stored. 
+  There are three sets of tables to gather the information at different levels:  1) QA metrics are computed by QA Tasks and only the results, conditions, thresholds and metric descriptions are stored in the database. For metrics that failed one can look at summary information for cdds and visits. 
+  2) That summary information is computed from the properties of a subset of high S/N point sources also stored in the database.
+  3) If the full image and source catalogs are required for futher inspection they can be retieved from the process output_dir using the butler. Configuration, code version and logs for each processed are also stored. 
   
-  This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results among datasets  using SQL. The mechanism for translating camera-specific metadata to the common model is being discussed.
+  This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results accross different processes of the same dataset or accross different datasets. The mechanism for translating camera-specific metadata to this common model is still being discussed.
   
-  Changes can be made using MySQLWorkbench (http://dev.mysql.com/downloads/workbench/) - it installs easily in several platforms. Clone this repo, open the sqa.mwb file, make your changes and export to SQL. Do not change the SQL directly.
+  Changes in the database model can be made using MySQLWorkbench (http://dev.mysql.com/downloads/workbench/) - it installs easily in several platforms. Clone this repo, open the sqa.mwb file, make your changes and export to SQL. Do not change the SQL directly.
 
 ## General guidelines
   
-- Store summary information and QA metrics
-- QA metrics must easily extended 
+- Store QA metrics and summary information for ccds and visits
+- QA metrics must easily extended (i.e without changing the schema) 
 - Must be optimized for fast and interactive QA visualization
-- It has to be camera agnostic, should support at least SDSS, CFHT and DECam images processed by the LSST stack and QA tasks that will compute the summary information and QA metrics 
-- TDB: data insgestion configuration should be responsible for the mapping of camera specific header key values to (table, property) in the schema
+- It has to be camera agnostic, should support SDSS, CFHT, HSC and DECam images processed by the LSST stack
+- TDB: data insgestion configuration should be responsible for the mapping of camera-specific header key values to (table, property) in the schema
 
 ## Database Model
 
