@@ -2,8 +2,8 @@
 
 ## Changelog
 
-v0.1 - Initial proposal
-v0.2 - Using LSST database naming convention (in preparation)
+- v0.1 - Initial proposal
+- v0.2 - Using LSST database naming convention (in preparation)
 
 ## Introduction
   
