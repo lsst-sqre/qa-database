@@ -1,20 +1,20 @@
 # SQuaRE QA database
 
-## Changelog
+## Change Record
 
+- v0.3 - Added a note about production QA tables and differences from the verification datasets use case
+- v0.2 - Using LSST database naming convention
 - v0.1 - Initial proposal
-- v0.2 - Using LSST database naming convention (in preparation)
 
 ## Introduction
   
-  SQuaRE is designing a QA database to store metrics and summary information 
-to be used in the context of the verification datasets. The current schema supports single visit processing and eventually  will be extended to co-add processing. 
+  SQuaRE is designing a QA database to store metrics and summary information. The current schema supports single visit processing and eventually  will be extended to co-add processing. The short term motivation is to create minimum viable prototype to be used in the context of the verification datasets and leverage the design of the QA tables for production. 
   
-  There are three sets of tables to gather the information at different levels:  1) QA metrics are computed by QA Tasks and only the results, conditions, thresholds and metric descriptions are stored in the database. For metrics that failed one can look at summary information for cdds and visits. 
-  2) That summary information is computed from the properties of a subset of high S/N point sources also stored in the database.
-  3) If the full image and source catalogs are required for futher inspection they can be retieved from the process output_dir using the butler. Configuration, code version and logs for each processed are also stored. 
+  In production (http://ldm-135.readthedocs.org/) each run will result in a database with associated QA tables. In this prototype, QA results from multiple runs will be acumulated in a separate database including basic provenance information.
   
-  This must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results accross different processes of the same dataset or accross different datasets. The mechanism for translating camera-specific metadata to this common model is still being discussed.
+  The proposed database schema has three sets of tables:  1) QA metrics are computed by QA Tasks and only the results, conditions, thresholds and metric descriptions are stored in the database. 2) For metrics that failed, one can look at summary information for cdds and visits, this summary information is computed from the properties of a subset of high S/N point sources also stored in the database.3) If the full image and source catalogs are required for futher inspection they can be retrieved from the data repository using the butler. Configuration, code version and logs for each process are also stored. 
+  
+  It must be understood as a 'common model' for the different camera supported by the stack. A clear advantage of that is to compare metrics and results accross different processes of the same dataset or accross different datasets. The mechanism for translating camera-specific metadata to this common model is still under discussion.
   
   Changes in the database model can be made using MySQLWorkbench (http://dev.mysql.com/downloads/workbench/) - it installs easily in several platforms. Clone this repo, open the sqa.mwb file, make your changes and export to SQL. Do not change the SQL directly.
 
