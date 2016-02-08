@@ -179,6 +179,7 @@ ORDER BY r.run_id;
 
 ## References
   - LSE-63 Data Quality Assurrance Plan
+  - LDM-135: Database Design 
   - LSST Database Schema, baseline version (https://lsst-web.ncsa.illinois.edu/schema/index.php?sVer=baseline)
   - pipeQA
   - HSC Database schema v1.0 
